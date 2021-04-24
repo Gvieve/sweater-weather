@@ -22,10 +22,4 @@ class CurrentWeather
     @conditions = data[:weather].first[:description]
     @icon = data[:weather].first[:icon]
   end
-
-  # def convert_time(time)
-  #   require "pry"; binding.pry
-  #   datetime = Time.at(time).to_datetime
-  #   datetime.strftime("%Y-%m-%d %H:%M:%S %z")
-  # end
 end

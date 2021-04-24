@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe HourlyWeather do
   describe 'happy path' do
-    it "builds a CurrentWeather PORO based on input" do
+    it "builds a HourlyWeather PORO based on input" do
       VCR.use_cassette('poro/current_weather') do
         location = 'denver,co'
         data = MapquestService.location(location)[:results].first
