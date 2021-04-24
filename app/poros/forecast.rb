@@ -12,7 +12,6 @@ class Forecast
   end
 
   def daily(data)
-    # require "pry"; binding.pry
     data.first(5).map do |day|
       DailyWeather.new(day)
     end
