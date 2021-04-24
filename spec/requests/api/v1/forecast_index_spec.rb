@@ -19,6 +19,10 @@ describe 'Forecast API' do
         expect(json[:data][:attributes]).to be_a(Hash)
         expect(json[:data][:attributes]).to have_key(:current_weather)
         expect(json[:data][:attributes][:current_weather]).to be_a(Hash)
+        expect(json[:data][:attributes]).to have_key(:daily_weather)
+        expect(json[:data][:attributes][:daily_weather]).to be_a(Hash)
+        expect(json[:data][:attributes]).to have_key(:hourly_weather)
+        expect(json[:data][:attributes][:hourly_weather]).to be_a(Hash)
       end
     end
   end

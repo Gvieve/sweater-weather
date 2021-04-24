@@ -2,6 +2,64 @@
 http_interactions:
 - request:
     method: get
+    uri: https://www.mapquestapi.com/geocoding/v1/address?key=mapquest_key&location=denver,co
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v1.4.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 24 Apr 2021 19:10:48 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Content-Length:
+      - '1733'
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET,POST
+      Access-Control-Allow-Origin:
+      - "*"
+      Cache-Control:
+      - no-cache, must-revalidate
+      Expires:
+      - Mon, 20 Dec 1998 01:00:00 GMT
+      Geocodetransactioncount:
+      - '1'
+      Last-Modified:
+      - Sat, 24 Apr 2021 19:10:48 GMT
+      Pragma:
+      - no-cache
+      Reversegeocodetransactioncount:
+      - '0'
+      Server:
+      - Apache-Coyote/1.1
+      Set-Cookie:
+      - JSESSIONID=9BEF0D5A6C31D101703EDAD3555278F3; Path=/; HttpOnly; Secure
+      Status:
+      - success
+      Transactionweight:
+      - '1.0'
+      Strict-Transport-Security:
+      - max-age=0
+    body:
+      encoding: UTF-8
+      string: '{"info":{"statuscode":0,"copyright":{"text":"\u00A9 2021 MapQuest,
+        Inc.","imageUrl":"http://api.mqcdn.com/res/mqlogo.gif","imageAltText":"\u00A9
+        2021 MapQuest, Inc."},"messages":[]},"options":{"maxResults":-1,"thumbMaps":true,"ignoreLatLngInput":false},"results":[{"providedLocation":{"location":"denver,co"},"locations":[{"street":"","adminArea6":"","adminArea6Type":"Neighborhood","adminArea5":"Denver","adminArea5Type":"City","adminArea4":"Denver
+        County","adminArea4Type":"County","adminArea3":"CO","adminArea3Type":"State","adminArea1":"US","adminArea1Type":"Country","postalCode":"","geocodeQualityCode":"A5XAX","geocodeQuality":"CITY","dragPoint":false,"sideOfStreet":"N","linkId":"282041090","unknownInput":"","type":"s","latLng":{"lat":39.738453,"lng":-104.984853},"displayLatLng":{"lat":39.738453,"lng":-104.984853},"mapUrl":"http://www.mapquestapi.com/staticmap/v5/map?key=mapquest_key&type=map&size=225,160&locations=39.738453,-104.984853|marker-sm-50318A-1&scalebar=true&zoom=12&rand=-506436760"},{"street":"","adminArea6":"","adminArea6Type":"Neighborhood","adminArea5":"","adminArea5Type":"City","adminArea4":"Denver
+        County","adminArea4Type":"County","adminArea3":"CO","adminArea3Type":"State","adminArea1":"US","adminArea1Type":"Country","postalCode":"","geocodeQualityCode":"A4XAX","geocodeQuality":"COUNTY","dragPoint":false,"sideOfStreet":"N","linkId":"282932003","unknownInput":"","type":"s","latLng":{"lat":39.738453,"lng":-104.984853},"displayLatLng":{"lat":39.738453,"lng":-104.984853},"mapUrl":"http://www.mapquestapi.com/staticmap/v5/map?key=mapquest_key&type=map&size=225,160&locations=39.738453,-104.984853|marker-sm-50318A-2&scalebar=true&zoom=9&rand=557523953"}]}]}'
+  recorded_at: Sat, 24 Apr 2021 19:10:48 GMT
+- request:
+    method: get
     uri: https://api.openweathermap.org/data/2.5/onecall?appid=open_weather_key&exclude=minutely&lang=en&lat=39.738453&lon=-104.984853&units=imperial
     body:
       encoding: US-ASCII
@@ -21,7 +79,7 @@ http_interactions:
       Server:
       - openresty
       Date:
-      - Sat, 24 Apr 2021 19:10:55 GMT
+      - Sat, 24 Apr 2021 19:10:49 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -38,7 +96,7 @@ http_interactions:
       - GET, POST
     body:
       encoding: UTF-8
-      string: '{"lat":39.7385,"lon":-104.9849,"timezone":"America/Denver","timezone_offset":-21600,"current":{"dt":1619291455,"sunrise":1619266137,"sunset":1619315203,"temp":58.68,"feels_like":56.21,"pressure":1005,"humidity":42,"dew_point":35.67,"uvi":6.35,"clouds":100,"visibility":10000,"wind_speed":1.99,"wind_deg":192,"weather":[{"id":804,"main":"Clouds","description":"overcast
+      string: '{"lat":39.7385,"lon":-104.9849,"timezone":"America/Denver","timezone_offset":-21600,"current":{"dt":1619291449,"sunrise":1619266137,"sunset":1619315203,"temp":58.68,"feels_like":56.21,"pressure":1005,"humidity":42,"dew_point":35.67,"uvi":6.35,"clouds":100,"visibility":10000,"wind_speed":1.99,"wind_deg":192,"weather":[{"id":804,"main":"Clouds","description":"overcast
         clouds","icon":"04d"}]},"hourly":[{"dt":1619290800,"temp":58.68,"feels_like":56.21,"pressure":1005,"humidity":42,"dew_point":35.67,"uvi":6.35,"clouds":100,"visibility":10000,"wind_speed":2.26,"wind_deg":7,"wind_gust":3.09,"weather":[{"id":804,"main":"Clouds","description":"overcast
         clouds","icon":"04d"}],"pop":0},{"dt":1619294400,"temp":59.76,"feels_like":57.16,"pressure":1005,"humidity":37,"dew_point":33.48,"uvi":5.91,"clouds":100,"visibility":10000,"wind_speed":2.55,"wind_deg":6,"wind_gust":3.8,"weather":[{"id":804,"main":"Clouds","description":"overcast
         clouds","icon":"04d"}],"pop":0},{"dt":1619298000,"temp":61.38,"feels_like":58.71,"pressure":1005,"humidity":32,"dew_point":31.37,"uvi":4.71,"clouds":100,"visibility":10000,"wind_speed":2.64,"wind_deg":73,"wind_gust":4.43,"weather":[{"id":804,"main":"Clouds","description":"overcast
@@ -96,5 +154,5 @@ http_interactions:
         rain","icon":"10d"}],"clouds":8,"pop":0.72,"rain":1.85,"uvi":8},{"dt":1619805600,"sunrise":1619784072,"sunset":1619833969,"moonrise":0,"moonset":1619794080,"moon_phase":0.64,"temp":{"day":73.26,"min":50.41,"max":79.72,"night":70.02,"eve":79.72,"morn":50.41},"feels_like":{"day":71.28,"night":47.41,"eve":79.72,"morn":47.41},"pressure":1014,"humidity":21,"dew_point":31.57,"wind_speed":10.2,"wind_deg":341,"wind_gust":17.67,"weather":[{"id":801,"main":"Clouds","description":"few
         clouds","icon":"02d"}],"clouds":22,"pop":0,"uvi":8},{"dt":1619892000,"sunrise":1619870399,"sunset":1619920429,"moonrise":1619850900,"moonset":1619884140,"moon_phase":0.68,"temp":{"day":83.57,"min":57.47,"max":87.69,"night":74.97,"eve":84.27,"morn":57.47},"feels_like":{"day":80.78,"night":54.66,"eve":81.32,"morn":54.66},"pressure":1002,"humidity":11,"dew_point":23.68,"wind_speed":14.99,"wind_deg":227,"wind_gust":21.56,"weather":[{"id":801,"main":"Clouds","description":"few
         clouds","icon":"02d"}],"clouds":14,"pop":0,"uvi":8}]}'
-  recorded_at: Sat, 24 Apr 2021 19:10:56 GMT
+  recorded_at: Sat, 24 Apr 2021 19:10:49 GMT
 recorded_with: VCR 6.0.0

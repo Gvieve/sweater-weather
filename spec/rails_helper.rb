@@ -29,8 +29,8 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.default_cassette_options = {re_record_interval: 7.days}
   config.allow_http_connections_when_no_cassette = true
-  # config.filter_sensitive_data('mapquest') { ENV['mapquest_key'] }
-  # config.filter_sensitive_data('open_weather') { ENV['open_weather_key'] }
+  config.filter_sensitive_data('mapquest_key') { ENV['mapquest_key'] }
+  config.filter_sensitive_data('open_weather_key') { ENV['open_weather_key'] }
 end
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
