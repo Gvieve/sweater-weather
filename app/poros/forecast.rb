@@ -1,22 +1,25 @@
 class Forecast
-  attr_reader :current,
-              :daily,
-              :hourly
+  attr_reader :id,
+              :current_weather,
+              :daily_weather,
+              :hourly_weather
 
   def initialize(data)
-    @current = CurrentWeather.new(data[:current])
-    @daily = daily_weather(data)
-    @hourly = hourly_weather(data)
+    @id = id
+    @current_weather = CurrentWeather.new(data[:current])
+    @daily_weather = daily(data[:daily])
+    @hourly_weather = hourly(data[:hourly])
   end
 
-  def daily_weather(data)
-    data[:daily][0..4].map do |day|
+  def daily(data)
+    # require "pry"; binding.pry
+    data.first(5).map do |day|
       DailyWeather.new(day)
     end
   end
 
-  def hourly_weather(data)
-    data[:hourly][0..7].map do |hour|
+  def hourly(data)
+    data.first(8).map do |hour|
       HourlyWeather.new(hour)
     end
   end
