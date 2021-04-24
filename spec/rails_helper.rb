@@ -24,7 +24,14 @@ require 'rspec/rails'
 # require only the support files necessary.
 #
 # Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
-
+VCR.configure do |config|
+  config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
+  config.hook_into :webmock
+  config.default_cassette_options = {re_record_interval: 7.days}
+  config.allow_http_connections_when_no_cassette = true
+  # config.filter_sensitive_data('mapquest') { ENV['mapquest_key'] }
+  # config.filter_sensitive_data('open_weather') { ENV['open_weather_key'] }
+end
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
