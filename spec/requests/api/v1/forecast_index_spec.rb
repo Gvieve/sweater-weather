@@ -5,7 +5,7 @@ describe 'Forecast API' do
     describe 'happy path' do
       it "sends the weather data when provided a valid location" do
         location = 'denver,co'
-        get "/api/v1/forecast?#{location}"
+        get "/api/v1/forecast?location=#{location}"
 
         json = JSON.parse(response.body, symbolize_names: true)
 
