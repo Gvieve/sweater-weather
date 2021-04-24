@@ -44,7 +44,7 @@ describe OpenWeatherService do
         expect(current).to have_key(:humidity)
         expect(current[:humidity]).to be_a(Integer)
         expect(current).to have_key(:uvi)
-        expect(current[:uvi]).to be_a(Float).or(be_an Integer)
+        expect(current[:uvi]).to be_a(Float).or be_an(Integer)
         expect(current).to have_key(:visibility)
         expect(current[:visibility]).to be_a(Integer)
         expect(current).to have_key(:weather)
