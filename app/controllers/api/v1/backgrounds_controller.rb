@@ -6,7 +6,6 @@ class Api::V1::BackgroundsController < ApplicationController
     data = UnsplashService.photos_by_location(city)[:results].first
     image = Image.new(location, data)
     render json: ImageSerializer.new(image)
-    require "pry"; binding.pry
   end
 
   private
