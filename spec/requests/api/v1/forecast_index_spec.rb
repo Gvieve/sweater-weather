@@ -51,9 +51,9 @@ describe 'Forecast API' do
           expect(current).to have_key(:sunset)
           expect(current[:sunset]).to be_a(String)
           expect(current).to have_key(:temperature)
-          expect(current[:temperature]).to be_a(Float)
+          expect(current[:temperature]).to be_a(Float).or be_an(Integer).or be_an(Integer)
           expect(current).to have_key(:feels_like)
-          expect(current[:feels_like]).to be_a(Float)
+          expect(current[:feels_like]).to be_a(Float).or be_an(Integer).or be_an(Integer)
           expect(current).to have_key(:humidity)
           expect(current[:humidity]).to be_a(Float).or be_an(Integer)
           expect(current).to have_key(:uvi)
@@ -81,9 +81,9 @@ describe 'Forecast API' do
           expect(daily.first).to have_key(:sunset)
           expect(daily.first[:sunset]).to be_a(String)
           expect(daily.first).to have_key(:max_temp)
-          expect(daily.first[:max_temp]).to be_a(Float)
+          expect(daily.first[:max_temp]).to be_a(Float).or be_an(Integer)
           expect(daily.first).to have_key(:min_temp)
-          expect(daily.first[:min_temp]).to be_a(Float)
+          expect(daily.first[:min_temp]).to be_a(Float).or be_an(Integer)
           expect(daily.first).to have_key(:conditions)
           expect(daily.first[:conditions]).to be_a(String)
           expect(daily.first).to have_key(:icon)
@@ -101,11 +101,54 @@ describe 'Forecast API' do
           expect(hourly.first).to have_key(:time)
           expect(hourly.first[:time]).to be_a(String)
           expect(hourly.first).to have_key(:temperature)
-          expect(hourly.first[:temperature]).to be_a(Float)
+          expect(hourly.first[:temperature]).to be_a(Float).or be_an(Integer)
           expect(hourly.first).to have_key(:conditions)
           expect(hourly.first[:conditions]).to be_a(String)
           expect(hourly.first).to have_key(:icon)
           expect(hourly.first[:icon]).to be_a(String)
+        end
+      end
+    end
+
+    describe 'sad path' do
+      it "returns an error when the location parameter is missing" do
+        VCR.use_cassette('requests/api/v1/sad_path') do
+          get "/api/v1/forecast"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+        end
+      end
+
+      it "returns an error when the location parameter is an empty string" do
+        VCR.use_cassette('requests/api/v1/sad_path') do
+          location = ''
+          get "/api/v1/forecast?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+        end
+      end
+
+      it "returns an error when the location parameter returns mapquest default" do
+        VCR.use_cassette('requests/api/v1/sad_default_path') do
+          location = 'poajsdlnasgloip]asdiashd'
+          get "/api/v1/forecast?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
         end
       end
     end
