@@ -14,7 +14,7 @@ describe HourlyWeather do
       expect(hourly).to be_a(HourlyWeather)
       expect(hourly.time).to be_a(String)
       expect(hourly.time).to eq(Time.at(@weather[:hourly].first[:dt]).strftime("%H:%M:%S"))
-      expect(hourly.temperature).to be_a(Float)
+      expect(hourly.temperature).to be_a(Float).or be_an(Integer)
       expect(hourly.conditions).to be_a(String)
       expect(hourly.icon).to be_a(String)
     end
