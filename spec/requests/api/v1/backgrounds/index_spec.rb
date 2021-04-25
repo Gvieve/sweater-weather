@@ -37,5 +37,104 @@ describe 'Background API' do
         end
       end
     end
+
+    describe 'sad path and edge cases' do
+      it "returns an error when the location is missing" do
+          get "/api/v1/backgrounds"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+      end
+
+      it "returns an error when the location is an empty string" do
+          location = ''
+          get "/api/v1/backgrounds?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+      end
+
+      it "returns an error when the location only has state and no city" do
+          location = ',co'
+          get "/api/v1/backgrounds?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+      end
+
+      it "returns an error when location only has city and no state" do
+          location = 'denver'
+          get "/api/v1/backgrounds?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+      end
+
+      it "returns an error when location has city but state is not two characters" do
+          location = 'denver, colorado'
+          get "/api/v1/backgrounds?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+      end
+
+      it "returns an error when location has city and state is not two characters" do
+          location = 'denver'
+          get "/api/v1/backgrounds?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+      end
+
+      it "returns an error when location there is no comma to separate city and state" do
+          location = 'denver co'
+          get "/api/v1/backgrounds?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Please include a valid location")
+      end
+
+      # it "returns an error when location returns mapquest default" do
+      #   VCR.use_cassette('requests/api/v1/sad_default_path') do
+      #     location = 'poajsdlnasgloip]asdiashd'
+      #     get "/api/v1/backgrounds?location=#{location}"
+      #
+      #     expect(response).to_not be_successful
+      #     json = JSON.parse(response.body, symbolize_names:true)
+      #
+      #     expect(response.status).to eq(400)
+      #     expect(json[:error]).to be_a(String)
+      #     expect(json[:error]).to eq("Please include a valid location")
+      #   end
+      # end
+    end
   end
 end
