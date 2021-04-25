@@ -20,4 +20,15 @@ RSpec.describe User, type: :model do
       expect(user.save).to eq(false)
     end
   end
+
+  describe 'instance methods' do
+    describe '#set_api_key' do
+      it "sets the api_key value on valid user when created" do
+        user = User.create!(email: 'jordiebear@email.com', password: 'littleone')
+        
+        expect(user.api_key).to be_a(String)
+        expect(user.api_key.length).to eq(28)
+      end
+    end
+  end
 end
