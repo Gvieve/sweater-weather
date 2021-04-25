@@ -6,12 +6,12 @@ describe UnsplashService do
       VCR.use_cassette('service/unsplash_denver') do
         location = 'denver,co'
         city_only = location.match(/^(.+?),/)[1]
-        page = 1
-        data = UnsplashService.photos_by_location(city_only, page)
+        data = UnsplashService.photos_by_location(city_only)
 
         expect(data).to be_a(Hash)
         expect(data).to have_key(:results)
         expect(data[:results]).to be_an(Array)
+        expect(data[:results].count).to eq(10)
         expect(data[:results].first).to have_key(:description)
         expect(data[:results].first[:description]).to be_a(String)
         expect(data[:results].first).to have_key(:urls)
