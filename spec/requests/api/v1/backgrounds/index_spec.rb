@@ -4,7 +4,7 @@ describe 'Background API' do
   describe 'background image by city' do
     describe 'happy path' do
       it "sends an image when provided a valid location" do
-        VCR.use_cassette('requests/api/v1/forecast') do
+        VCR.use_cassette('requests/api/v1/background_denver') do
           location = 'denver,co'
           get "/api/v1/backgrounds?location=#{location}"
 
