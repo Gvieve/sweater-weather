@@ -4,7 +4,7 @@ class Api::V1::ForecastController < ApplicationController
     return invalid_location if !location || location == ""
     data = MapquestService.location(location)[:results].first
     coords = Coordinate.new(data)
-    return invalid_location if default(coords)
+    return invalid_location if default_coords(coords)
     weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
     render json: ForecastSerializer.new(Forecast.new(weather))
   end
@@ -16,7 +16,7 @@ class Api::V1::ForecastController < ApplicationController
     render_error(error)
   end
 
-  def default(coords)
+  def default_coords(coords)
     coords.latitude == 39.390897 && coords.longitude == -99.066067
   end
 
