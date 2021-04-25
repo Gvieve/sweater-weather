@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe DailyWeather do
   describe 'happy path' do
-    it "builds a CurrentWeather PORO based on input" do
-      VCR.use_cassette('poro/current_weather') do
+    it "builds a DailyWeather PORO based on input" do
+      VCR.use_cassette('poros/weather') do
         location = 'denver,co'
         data = MapquestService.location(location)[:results].first
         coords = Coordinate.new(data)
@@ -18,8 +18,8 @@ describe DailyWeather do
       expect(daily.sunrise).to eq(Time.at(@weather[:current][:sunrise]).to_s)
       expect(daily.sunset).to be_a(String)
       expect(daily.sunset).to eq(Time.at(@weather[:current][:sunset]).to_s)
-      expect(daily.max_temp).to be_a(Float)
-      expect(daily.min_temp).to be_a(Float)
+      expect(daily.max_temp).to be_a(Float).or be_an(Integer)
+      expect(daily.min_temp).to be_a(Float).or be_an(Integer)
       expect(daily.conditions).to be_a(String)
       expect(daily.icon).to be_a(String)
     end
