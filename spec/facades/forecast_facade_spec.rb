@@ -4,7 +4,7 @@ describe ForecastFacade do
   describe 'happy path' do
     it "called Facade and got the forecast with valid location" do
       VCR.use_cassette('facades/forecast_denver') do
-        params = ({ location: 'dever, co' })
+        params = ({ location: 'denver, co' })
         @result = ForecastFacade.get_forecast(params)
       end
 
