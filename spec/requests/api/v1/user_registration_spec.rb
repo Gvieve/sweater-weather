@@ -115,9 +115,9 @@ describe 'User Registration API' do
           json = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response.status).to eq(400)
+          expect(response.status).to eq(404)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Password confirmation doesn't match Password")
+          expect(json[:error]).to eq("Validation failed: Password confirmation doesn't match Password")
         end
 
         it "returns an error when that user email already exists" do
@@ -137,9 +137,9 @@ describe 'User Registration API' do
           json = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response.status).to eq(400)
+          expect(response.status).to eq(404)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Email has already been taken")
+          expect(json[:error]).to eq("Validation failed: Email has already been taken")
         end
 
         it "returns an error then the email is not a valid email format" do
@@ -158,9 +158,9 @@ describe 'User Registration API' do
           json = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response.status).to eq(400)
+          expect(response.status).to eq(404)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Email is invalid")
+          expect(json[:error]).to eq("Validation failed: Email is invalid")
         end
 
         it "returns an error when the request is not sent in json" do
