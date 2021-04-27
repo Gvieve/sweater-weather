@@ -7,7 +7,6 @@ class Api::V1::RoadTripController < ApplicationController
 
     if !user.empty? && !invalid_location_param(origin, destination)
       route = MapquestService.routes(origin, destination)[:route]
-      # require "pry"; binding.pry
       coords = Coordinate.new(route[:boundingBox])
       weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
       all_data = {  origin: origin,
@@ -16,6 +15,9 @@ class Api::V1::RoadTripController < ApplicationController
                     weather: weather}
       road_trip = RoadTrip.new(all_data)
       render json: RoadtripSerializer.new(road_trip)
+    else
+      error = "Invalid request, please include valid parameters"
+      render_error(error, :unauthorized)
     end
   end
 

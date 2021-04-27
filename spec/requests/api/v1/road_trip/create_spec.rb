@@ -87,6 +87,45 @@ describe 'Forecast API' do
         end
       end
     end
+
+    describe 'sad path' do
+      it "returns no 401 error when the api key doesn't match any user" do
+        route = { origin: 'denver, co',
+                  destination:  'breckenridge, co',
+                  api_key: "#{SecureRandom.hex(14)}"}
+        headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+        post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+        json = JSON.parse(response.body, symbolize_names:true)
+
+        expect(response).to_not be_successful
+        expect(response.status).to eq(401)
+        expect(json[:error]).to be_a(String)
+        expect(json[:error]).to eq("Invalid request, please include valid parameters")
+      end
+
+      it "returns no weather data when the trip is greater than 7 days" do
+        VCR.use_cassette('requests/api/v1/roadtrip_london_to_capetown') do
+          user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
+          route = { origin: 'london, uk',
+                    destination:  'capetown, za',
+                    api_key: user1.api_key}
+          headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+          post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+          result = JSON.parse(response.body, symbolize_names: true)[:data][:attributes]
+          expect(response).to be_successful
+          expect(response.status).to eq(200)
+          expect(result[:start_city]).to eq("#{route[:origin]}")
+          expect(result[:end_city]).to eq("#{route[:destination]}")
+          expect(result[:travel_time]).to eq("168 hours, 28 minutes")
+          expect(result[:weather_at_eta]).to be_a(Hash)
+          expect(result[:weather_at_eta].empty?).to eq(true)
+        end
+      end
+    end
   end
 end
 
