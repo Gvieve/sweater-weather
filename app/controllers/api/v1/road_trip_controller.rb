@@ -7,7 +7,7 @@ class Api::V1::RoadTripController < ApplicationController
 
     if !user.empty? && !invalid_location_param(origin, destination)
       route = MapquestService.routes(origin, destination)[:route]
-      require "pry"; binding.pry
+      # require "pry"; binding.pry
       coords = Coordinate.new(route[:boundingBox])
       weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude, exclude='minutely,daily')
       all_data = {  origin: origin,

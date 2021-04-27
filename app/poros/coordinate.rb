@@ -9,7 +9,7 @@ class Coordinate
 
   def find_latitude(data)
     if data[:locations]
-      data[:locations].first[:latlng][:lat]
+      data[:locations].first[:latLng][:lat]
     else
       data[:lr][:lat]
     end
