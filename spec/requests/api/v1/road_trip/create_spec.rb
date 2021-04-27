@@ -7,7 +7,7 @@ describe 'Forecast API' do
         @user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
       end
 
-      it "provides total travel time and weather upon arrival when given valid data" do
+      it "provides travel time and weather within 48 hours upon arrival when given valid data" do
         VCR.use_cassette('requests/api/v1/roadtrip_denver_to_breckenridge') do
           route = { origin: 'denver, co',
                     destination:  'breckenridge, co',
@@ -24,12 +24,16 @@ describe 'Forecast API' do
           expect(json).to have_key(:data)
           expect(json[:data]).to have_key(:id)
           expect(json[:data][:id]).to be_nil
+          expect(json[:data]).to have_key(:type)
+          expect(json[:data][:type]).to eq("roadtrip")
           expect(json[:data]).to have_key(:attributes)
           expect(json[:data][:attributes]).to be_a(Hash)
           expect(json[:data][:attributes]).to have_key(:start_city)
           expect(json[:data][:attributes][:start_city]).to be_a(String)
+          expect(json[:data][:attributes][:start_city]).to eq(route[:origin])
           expect(json[:data][:attributes]).to have_key(:end_city)
           expect(json[:data][:attributes][:end_city]).to be_a(String)
+          expect(json[:data][:attributes][:end_city]).to eq(route[:destination])
           expect(json[:data][:attributes]).to have_key(:travel_time)
           expect(json[:data][:attributes][:travel_time]).to be_a(String)
           expect(json[:data][:attributes]).to have_key(:weather_at_eta)
