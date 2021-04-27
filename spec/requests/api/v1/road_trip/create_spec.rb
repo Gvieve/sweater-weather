@@ -6,7 +6,7 @@ describe 'Forecast API' do
       before :each do
         @user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
       end
-
+      
       it "provides travel time and weather within 48 hours upon arrival when given valid data" do
         VCR.use_cassette('requests/api/v1/roadtrip_denver_to_breckenridge') do
           route = { origin: 'denver, co',
