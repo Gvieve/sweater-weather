@@ -9,7 +9,7 @@ class Api::V1::RoadTripController < ApplicationController
       route = MapquestService.routes(origin, destination)[:route]
       # require "pry"; binding.pry
       coords = Coordinate.new(route[:boundingBox])
-      weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude, exclude='minutely,daily')
+      weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
       all_data = {  origin: origin,
                     destination: destination,
                     route: route,

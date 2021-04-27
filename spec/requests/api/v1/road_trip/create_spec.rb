@@ -6,7 +6,7 @@ describe 'Forecast API' do
       before :each do
         @user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
       end
-      
+
       it "provides travel time and weather within 48 hours upon arrival when given valid data" do
         VCR.use_cassette('requests/api/v1/roadtrip_denver_to_breckenridge') do
           route = { origin: 'denver, co',
@@ -42,6 +42,48 @@ describe 'Forecast API' do
           expect(json[:data][:attributes][:weather_at_eta][:conditions]).to be_a(String)
           expect(json[:data][:attributes][:weather_at_eta]).to have_key(:temperature)
           expect(json[:data][:attributes][:weather_at_eta][:temperature]).to be_a(Float).or be_an(Integer)
+        end
+      end
+
+      it "provides travel time and weather when trip is over 48 hours when given valid data" do
+        VCR.use_cassette('requests/api/v1/roadtrip_anchorage_to_casper') do
+          route = { origin: 'anchorage, ak',
+                    destination:  'casper, wy',
+                    api_key: @user1.api_key}
+          headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+          post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+          result = JSON.parse(response.body, symbolize_names: true)[:data][:attributes]
+
+          expect(response).to be_successful
+          expect(response.status).to eq(200)
+          expect(result[:start_city]).to eq("#{route[:origin]}")
+          expect(result[:end_city]).to eq("#{route[:destination]}")
+          expect(result[:travel_time]).to eq("48 hours, 15 minutes")
+          expect(result[:weather_at_eta]).to be_a(Hash)
+          expect(result[:weather_at_eta]).to have_key(:temperature)
+        end
+      end
+
+      it "provides travel time and weather when trip is less than 1 hour when given valid data" do
+        VCR.use_cassette('requests/api/v1/roadtrip_denver_to_boulder') do
+          route = { origin: 'denver, co',
+                    destination:  'boulder, co',
+                    api_key: @user1.api_key}
+          headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+          post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+          result = JSON.parse(response.body, symbolize_names: true)[:data][:attributes]
+
+          expect(response).to be_successful
+          expect(response.status).to eq(200)
+          expect(result[:start_city]).to eq("#{route[:origin]}")
+          expect(result[:end_city]).to eq("#{route[:destination]}")
+          expect(result[:travel_time]).to eq("00 hours, 35 minutes")
+          expect(result[:weather_at_eta]).to be_a(Hash)
+          expect(result[:weather_at_eta]).to have_key(:temperature)
         end
       end
     end

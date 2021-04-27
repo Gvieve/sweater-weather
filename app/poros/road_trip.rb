@@ -9,13 +9,23 @@ class RoadTrip
     @id = id
     @start_city = data[:origin]
     @end_city = data[:destination]
-    @travel_time = data[:route][:formattedTime]
+    @travel_time = format_travel_time(data[:route])
+    @travel_time_raw = data[:route][:formattedTime]
     @arrival_time = calculate_arrival_time(data[:weather][:current][:dt])
     @weather_at_eta = get_forecast(data[:weather])
   end
 
+  def format_travel_time(data)
+    if data.nil?
+      "impossible route"
+    else
+      time = data[:formattedTime].split(":")
+      "#{time[0]} hours, #{time[1]} minutes"
+    end
+  end
+
   def calculate_arrival_time(current_time)
-    times = @travel_time.split(":")
+    times = @travel_time_raw.split(":")
     @hours, @minutes, seconds = times
     travel_seconds_elapsed = (@hours.to_i * 3600) + (@minutes.to_i * 60)
     Time.at(current_time) + travel_seconds_elapsed
@@ -26,8 +36,7 @@ class RoadTrip
       nil
     elsif @hours.to_i > 47
       destination_weather = weather[:daily].find do |daily|
-        require "pry"; binding.pry
-        Time.at(daily[:dt]) > @arrival_time
+        Time.at(daily[:dt]).day == @arrival_time.day
       end
       DailyWeather.new(destination_weather)
     else
@@ -40,10 +49,14 @@ class RoadTrip
 
   def get_forecast(weather)
     weather = get_weather(weather)
-    # require "pry"; binding.pry
     if !weather.nil?
-      { temperature: weather.temperature,
-        conditions: weather.conditions}
+      if weather.class == HourlyWeather
+        { temperature: weather.temperature,
+          conditions: weather.conditions }
+      else
+        { temperature: weather.max_temp,
+          conditions: weather.conditions }
+      end
     else
       {}
     end
