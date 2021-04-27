@@ -6,14 +6,14 @@ describe 'Forecast API' do
       before :each do
         @user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
       end
-      it "provides total travel time and weather upon arrival when given valid data" do
 
+      it "provides total travel time and weather upon arrival when given valid data" do
         VCR.use_cassette('requests/api/v1/roadtrip_denver_to_breckenridge') do
           route = { origin: 'denver, co',
                     destination:  'breckenridge, co',
-                    api_key: @user1.api_key
-                    }
+                    api_key: @user1.api_key}
           headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
           post "/api/v1/road_trip", headers: headers, params: route.to_json
 
           json = JSON.parse(response.body, symbolize_names: true)
@@ -40,6 +40,9 @@ describe 'Forecast API' do
           expect(json[:data][:attributes][:weather_at_eta][:temperature]).to be_a(Float).or be_an(Integer)
         end
       end
+    end
+  end
+end
 
     #   describe 'the weather data for valid request includes' do
     #     before :each do
@@ -220,5 +223,3 @@ describe 'Forecast API' do
     #     end
     #   end
     # end
-  end
-end
