@@ -11,7 +11,7 @@ class Coordinate
     if data[:locations]
       data[:locations].first[:latlng][:lat]
     else
-      data[:ul][:lat]
+      data[:lr][:lat]
     end
   end
 
@@ -19,7 +19,7 @@ class Coordinate
     if data[:locations]
       data[:locations].first[:latLng][:lng]
     else
-      data[:ul][:lng]
+      data[:lr][:lng]
     end
   end
 end
