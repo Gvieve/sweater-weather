@@ -13,6 +13,8 @@ class RoadTrip
     @weather_at_eta = get_weather(data[:weather], data[:route])
   end
 
+  private
+
   def format_travel_time(data)
     if data.nil?
       "impossible route"
@@ -20,13 +22,6 @@ class RoadTrip
       time = data[:formattedTime].split(":")
       "#{time[0]} hours, #{time[1]} minutes"
     end
-  end
-
-  def arrival_time(current_time, travel_time_raw)
-    times = travel_time_raw.split(":")
-    @hours, minutes, seconds = times
-    travel_seconds_elapsed = (@hours.to_i * 3600) + (minutes.to_i * 60)
-    Time.at(current_time) + travel_seconds_elapsed
   end
 
   def get_weather(weather, route)
@@ -44,6 +39,13 @@ class RoadTrip
       { temperature: hourly.temperature,
         conditions: hourly.conditions }
     end
+  end
+
+  def arrival_time(current_time, travel_time_raw)
+    times = travel_time_raw.split(":")
+    @hours, minutes, seconds = times
+    travel_seconds_elapsed = (@hours.to_i * 3600) + (minutes.to_i * 60)
+    Time.at(current_time) + travel_seconds_elapsed
   end
 
   def daily_weather(weather, arrival)
