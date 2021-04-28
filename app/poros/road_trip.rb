@@ -33,7 +33,6 @@ class RoadTrip
 
   def get_weather(weather)
     if @hours.to_i > 167
-
       nil
     elsif @hours.to_i > 47
       destination_weather = weather[:daily].find do |daily|

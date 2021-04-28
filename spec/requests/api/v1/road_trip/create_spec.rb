@@ -180,6 +180,55 @@ describe 'Forecast API' do
         expect(json[:error]).to be_a(String)
         expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
+
+      it "returns an error when no origin or destination are provided" do
+        user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
+        route = { api_key: user1.api_key }
+        headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+        post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+        json = JSON.parse(response.body, symbolize_names:true)
+
+        expect(response).to_not be_successful
+        expect(response.status).to eq(400)
+        expect(json[:error]).to be_a(String)
+        expect(json[:error]).to eq("Invalid request, please include valid parameters")
+      end
+
+      it "returns an error when the destination is empty string" do
+        user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
+        route = { origin: 'denver, co',
+                  destination:  '',
+                  api_key: user1.api_key}
+        headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+        post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+        json = JSON.parse(response.body, symbolize_names:true)
+
+        expect(response).to_not be_successful
+        expect(response.status).to eq(400)
+        expect(json[:error]).to be_a(String)
+        expect(json[:error]).to eq("Invalid request, please include valid parameters")
+      end
+
+      it "returns an error when the origin is empty string" do
+        user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
+        route = { origin: '',
+                  destination:  'breckenridge, co',
+                  api_key: user1.api_key}
+        headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+        post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+        json = JSON.parse(response.body, symbolize_names:true)
+
+        expect(response).to_not be_successful
+        expect(response.status).to eq(400)
+        expect(json[:error]).to be_a(String)
+        expect(json[:error]).to eq("Invalid request, please include valid parameters")
+      end
     end
   end
 end
