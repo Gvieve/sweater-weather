@@ -47,7 +47,7 @@ describe 'Background API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please include a valid location")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
 
       it "returns an error when the location is an empty string" do
@@ -59,7 +59,7 @@ describe 'Background API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please include a valid location")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
 
       it "returns an error when the location only has state and no city" do
@@ -71,7 +71,7 @@ describe 'Background API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please include a valid location")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
 
       it "returns an error when location only has city and no state" do
@@ -83,7 +83,7 @@ describe 'Background API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please include a valid location")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
 
       it "returns an error when location has city but state is not two characters" do
@@ -95,7 +95,7 @@ describe 'Background API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please include a valid location")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
 
       it "returns an error when location has city and state is not two characters" do
@@ -107,7 +107,7 @@ describe 'Background API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please include a valid location")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
 
       it "returns an error when location there is no comma to separate city and state" do
@@ -119,7 +119,7 @@ describe 'Background API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please include a valid location")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
 
       # it "returns an error when location returns mapquest default" do
@@ -132,7 +132,7 @@ describe 'Background API' do
       #
       #     expect(response.status).to eq(400)
       #     expect(json[:error]).to be_a(String)
-      #     expect(json[:error]).to eq("Please include a valid location")
+      #     expect(json[:error]).to eq("Invalid request, please include valid parameters")
       #   end
       # end
     end
