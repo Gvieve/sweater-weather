@@ -20,6 +20,7 @@ describe 'Background API' do
           expect(json[:data][:id]).to be_nil
           expect(json[:data]).to have_key(:attributes)
           expect(json[:data][:attributes]).to be_a(Hash)
+          expect(json[:data][:attributes].count).to eq(4)
           expect(json[:data][:attributes]).to have_key(:location)
           expect(json[:data][:attributes][:location]).to be_a(String)
           expect(json[:data][:attributes]).to have_key(:image_url)
@@ -28,6 +29,7 @@ describe 'Background API' do
           expect(json[:data][:attributes][:description]).to be_a(String)
           expect(json[:data][:attributes]).to have_key(:credit)
           expect(json[:data][:attributes][:credit]).to be_a(Hash)
+          expect(json[:data][:attributes][:credit].count).to eq(3)
           expect(json[:data][:attributes][:credit]).to have_key(:source)
           expect(json[:data][:attributes][:credit][:source]).to be_a(String)
           expect(json[:data][:attributes][:credit]).to have_key(:author)
@@ -121,20 +123,6 @@ describe 'Background API' do
           expect(json[:error]).to be_a(String)
           expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
-
-      # it "returns an error when location returns mapquest default" do
-      #   VCR.use_cassette('requests/api/v1/sad_default_path') do
-      #     location = 'poajsdlnasgloip]asdiashd'
-      #     get "/api/v1/backgrounds?location=#{location}"
-      #
-      #     expect(response).to_not be_successful
-      #     json = JSON.parse(response.body, symbolize_names:true)
-      #
-      #     expect(response.status).to eq(400)
-      #     expect(json[:error]).to be_a(String)
-      #     expect(json[:error]).to eq("Invalid request, please include valid parameters")
-      #   end
-      # end
     end
   end
 end

@@ -18,6 +18,7 @@ describe 'Forecast API' do
           expect(json[:data][:id]).to be_nil
           expect(json[:data]).to have_key(:attributes)
           expect(json[:data][:attributes]).to be_a(Hash)
+          expect(json[:data][:attributes].count).to eq(3)
           expect(json[:data][:attributes]).to have_key(:current_weather)
           expect(json[:data][:attributes][:current_weather]).to be_a(Hash)
           expect(json[:data][:attributes]).to have_key(:daily_weather)
@@ -44,6 +45,7 @@ describe 'Forecast API' do
           expect(response).to be_successful
           expect(response.status).to eq(200)
           expect(current).to be_a(Hash)
+          expect(current.count).to eq(10)
           expect(current).to have_key(:datetime)
           expect(current[:datetime]).to be_a(String)
           expect(current).to have_key(:sunrise)
@@ -74,6 +76,7 @@ describe 'Forecast API' do
           expect(daily).to be_an(Array)
           expect(daily.count).to eq(5)
           expect(daily.first).to be_a(Hash)
+          expect(daily.first.count).to eq(7)
           expect(daily.first).to have_key(:date)
           expect(daily.first[:date]).to be_a(String)
           expect(daily.first).to have_key(:sunrise)
@@ -98,6 +101,7 @@ describe 'Forecast API' do
           expect(hourly).to be_an(Array)
           expect(hourly.count).to eq(8)
           expect(hourly.first).to be_a(Hash)
+          expect(hourly.first.count).to eq(4)
           expect(hourly.first).to have_key(:time)
           expect(hourly.first[:time]).to be_a(String)
           expect(hourly.first).to have_key(:temperature)
