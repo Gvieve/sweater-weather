@@ -1,17 +1,12 @@
 class Api::V1::UsersController < ApplicationController
 
   def create
-    return invalid_request if !required.all? {|key| params.has_key? key }
+    return render_invalid_params if !required.all? {|key| params.has_key? key }
     new_user = User.create!(user_params)
     render json: UsersSerializer.new(new_user), status: :created
   end
 
   private
-
-  def invalid_request
-    error = "Please send a valid request, missing required information"
-    render_error(error)
-  end
 
   def required
     [:email, :password, :password_confirmation]

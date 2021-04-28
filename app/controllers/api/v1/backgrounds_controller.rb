@@ -1,7 +1,7 @@
 class Api::V1::BackgroundsController < ApplicationController
 
   def index
-    return invalid_location if invalid_location_param(location)
+    return render_invalid_params if invalid_location_param(location)
     city = location.match(/^(.+?),/)[1]
     data = UnsplashService.photos_by_location(city)[:results].first
     image = Image.new(location, data)
@@ -9,11 +9,6 @@ class Api::V1::BackgroundsController < ApplicationController
   end
 
   private
-
-  def invalid_location
-    error = "Please include a valid location"
-    render_error(error)
-  end
 
   def invalid_location_param(location_city)
     return true if !location || location == ""

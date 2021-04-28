@@ -56,7 +56,7 @@ describe 'User Registration API' do
 
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please send a valid request, missing required information")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
         end
 
         it "returns an error when password is missing" do
@@ -76,7 +76,7 @@ describe 'User Registration API' do
           expect(response).to_not be_successful
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please send a valid request, missing required information")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
         end
 
         it "returns an error when password_confirmation is missing" do
@@ -96,7 +96,7 @@ describe 'User Registration API' do
           expect(response).to_not be_successful
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please send a valid request, missing required information")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
         end
 
         it "returns an error when password and password_confirmation don't match" do
@@ -180,7 +180,7 @@ describe 'User Registration API' do
           expect(response).to_not be_successful
           expect(response.status).to eq(400)
           expect(json[:error]).to be_a(String)
-          expect(json[:error]).to eq("Please send a valid request, missing required information")
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
         end
       end
     end

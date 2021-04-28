@@ -25,8 +25,7 @@ class Api::V1::RoadTripController < ApplicationController
         render json: RoadtripSerializer.new(road_trip)
       end
     elsif invalid_location_param(origin, destination)
-      error = "Invalid request, please include valid parameters"
-      render_error(error)
+      render_invalid_params
     else
       error = "Invalid request, please include valid parameters"
       render_error(error, :unauthorized)
