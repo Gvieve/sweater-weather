@@ -96,11 +96,6 @@ These instructions will get you a copy of the project up and running on your loc
 #### API Documentation
 Please see the [API Documentation](https://github.com/Yardsourcing/yardsourcing-engine/blob/main/APIContract.md) for detailed information about each endpoint, existing parameters, and expected json data input and output.
 
-#### Postman
-- To run postman endpoints, start the Sweater Weather application locally
-    `rails s`
-- Utilize this [link](https://www.getpostman.com/collections/de993f8fcc4c974d68a2) to download the postman suite
-
 ### Database Schema
 <p style="text-align:center;"><img src="Schema_yardsourcing.png" height="350"></p>
 
@@ -115,6 +110,11 @@ $ bundle exec rspec
 $ bundle exec rspec <file path>
 ```
 for example: `bundle exec rspec spec/requests/api/v1/forecast/index_spec.rb`
+
+#### Postman
+- To run postman endpoints, start the Sweater Weather application locally
+    `rails s`
+- Utilize this [link](https://www.getpostman.com/collections/de993f8fcc4c974d68a2) to download the postman suite
 
 ### How to Contribute
 
