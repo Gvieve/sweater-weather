@@ -10,8 +10,8 @@ class RoadTrip
     @start_city = data[:origin]
     @end_city = data[:destination]
     @travel_time = format_travel_time(data[:route])
-    @travel_time_raw = data[:route][:formattedTime]
-    @arrival_time = calculate_arrival_time(data[:weather][:current][:dt])
+    @travel_time_raw = data[:route][:formattedTime] unless data[:route].nil?
+    @arrival_time = calculate_arrival_time(data[:weather][:current][:dt]) unless data[:weather].nil?
     @weather_at_eta = get_forecast(data[:weather])
   end
 
@@ -33,6 +33,7 @@ class RoadTrip
 
   def get_weather(weather)
     if @hours.to_i > 167
+
       nil
     elsif @hours.to_i > 47
       destination_weather = weather[:daily].find do |daily|
@@ -48,14 +49,16 @@ class RoadTrip
   end
 
   def get_forecast(weather)
-    weather = get_weather(weather)
     if !weather.nil?
+      weather = get_weather(weather)
       if weather.class == HourlyWeather
         { temperature: weather.temperature,
           conditions: weather.conditions }
-      else
+      elsif weather.class == DailyWeather
         { temperature: weather.max_temp,
           conditions: weather.conditions }
+      else
+        {}
       end
     else
       {}

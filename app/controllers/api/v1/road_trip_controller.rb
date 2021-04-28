@@ -7,14 +7,26 @@ class Api::V1::RoadTripController < ApplicationController
 
     if !user.empty? && !invalid_location_param(origin, destination)
       route = MapquestService.routes(origin, destination)[:route]
-      coords = Coordinate.new(route[:boundingBox])
-      weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
-      all_data = {  origin: origin,
-                    destination: destination,
-                    route: route,
-                    weather: weather}
-      road_trip = RoadTrip.new(all_data)
-      render json: RoadtripSerializer.new(road_trip)
+      if route[:routeError][:errorCode] == 2
+        all_data = {  origin: origin,
+                      destination: destination,
+                      route: nil,
+                      weather: nil}
+        road_trip = RoadTrip.new(all_data)
+        render json: RoadtripSerializer.new(road_trip)
+      else
+        coords = Coordinate.new(route[:boundingBox])
+        weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
+        all_data = {  origin: origin,
+                      destination: destination,
+                      route: route,
+                      weather: weather}
+        road_trip = RoadTrip.new(all_data)
+        render json: RoadtripSerializer.new(road_trip)
+      end
+    elsif invalid_location_param(origin, destination)
+      error = "Invalid request, please include valid parameters"
+      render_error(error)
     else
       error = "Invalid request, please include valid parameters"
       render_error(error, :unauthorized)
