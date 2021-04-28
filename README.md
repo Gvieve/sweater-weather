@@ -114,7 +114,7 @@ for example: `bundle exec rspec spec/requests/api/v1/forecast/index_spec.rb`
 #### Postman
 - To run postman endpoints, start the Sweater Weather application locally
     `rails s`
-- Utilize this [link](https://www.getpostman.com/collections/de993f8fcc4c974d68a2) to download the postman suite
+- Utilize this [link](https://www.getpostman.com/collections/55f23801919b398512bf) to download the postman suite
 
 ### How to Contribute
 
