@@ -9,6 +9,8 @@ class ForecastFacade
 
   def self.get_weather(coords)
     weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
+    weather[:daily_limit] = 5
+    weather[:hourly_limit] = 8
     Forecast.new(weather)
   end
 
