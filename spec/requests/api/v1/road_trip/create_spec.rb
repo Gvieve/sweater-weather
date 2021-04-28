@@ -83,7 +83,7 @@ describe 'Forecast API' do
           expect(response.status).to eq(200)
           expect(result[:start_city]).to eq("#{route[:origin]}")
           expect(result[:end_city]).to eq("#{route[:destination]}")
-          expect(result[:travel_time]).to eq("00 hours, 35 minutes")
+          expect(result[:travel_time]).to eq("0 hours, 35 minutes")
           expect(result[:weather_at_eta]).to be_a(Hash)
           expect(result[:weather_at_eta]).to have_key(:temperature)
         end

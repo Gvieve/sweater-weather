@@ -123,6 +123,18 @@ describe 'Background API' do
           expect(json[:error]).to be_a(String)
           expect(json[:error]).to eq("Invalid request, please include valid parameters")
       end
+
+      it "returns an error when no matching images can be found" do
+          location = 'ausin, tx'
+          get "/api/v1/backgrounds?location=#{location}"
+
+          expect(response).to_not be_successful
+          json = JSON.parse(response.body, symbolize_names:true)
+
+          expect(response.status).to eq(400)
+          expect(json[:error]).to be_a(String)
+          expect(json[:error]).to eq("Invalid request, please include valid parameters")
+      end
     end
   end
 end

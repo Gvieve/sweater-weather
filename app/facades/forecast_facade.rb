@@ -22,6 +22,6 @@ class ForecastFacade
 
   def self.invalid_location_param(location)
     return true if !location || location == ""
-    location.match(/([^,]+)(, *)([a-z]{2})$/).nil?
+    location.downcase.match(/([^,]+)(, *)([a-z]{2})$/).nil?
   end
 end

@@ -35,7 +35,7 @@ class RoadTripFacade
   def self.invalid_location_param(origin, destination)
     return true if !origin || origin == ""
     return true if !destination || destination == ""
-    return true if origin.match(/([^,]+)(, *)([a-z]{2})$/).nil?
-    destination.match(/([^,]+)(, *)([a-z]{2})$/).nil?
+    return true if origin.downcase.match(/([^,]+)(, *)([a-z]{2})$/).nil?
+    destination.downcase.match(/([^,]+)(, *)([a-z]{2})$/).nil?
   end
 end
