@@ -9,6 +9,8 @@ class ForecastFacade
 
   def self.get_weather(coords)
     weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
+    weather[:daily_limit] = 5
+    weather[:hourly_limit] = 8
     Forecast.new(weather)
   end
 
@@ -20,6 +22,6 @@ class ForecastFacade
 
   def self.invalid_location_param(location)
     return true if !location || location == ""
-    location.match(/([^,]+)(, *)([a-z]{2})$/).nil?
+    location.downcase.match(/([^,]+)(, *)([a-z]{2})$/).nil?
   end
 end

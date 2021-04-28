@@ -20,7 +20,7 @@ class RoadTrip
       "impossible route"
     else
       time = data[:formattedTime].split(":")
-      "#{time[0]} hours, #{time[1]} minutes"
+      "#{time[0].to_i} hours, #{time[1].to_i} minutes"
     end
   end
 

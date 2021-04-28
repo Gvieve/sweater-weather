@@ -9,7 +9,8 @@ describe Forecast do
         coords = Coordinate.new(data)
         @weather = OpenWeatherService.forecast_by_location(coords.latitude, coords.longitude)
       end
-
+      @weather[:daily_limit] = 5
+      @weather[:hourly_limit] = 8
       forecast = Forecast.new(@weather)
 
       expect(forecast).to be_a(Forecast)
