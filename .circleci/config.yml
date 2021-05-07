@@ -1,0 +1,30 @@
+version: 2.1
+orbs:
+  heroku: circleci/heroku@1.2.6
+  ruby: circleci/ruby@0.1.2
+
+workflows:
+heroku_deploy:
+  jobs:
+    - build
+    - heroku/deploy-via-git:
+        requires:
+          - build
+        filters:
+          branches:
+            only: main
+        post-steps:
+          - run: rails db:migrate
+
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.5.3-stretch-node
+    executor: ruby/default
+    steps:
+      - checkout
+      - run: gem install bundler
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - ruby/bundle-install
