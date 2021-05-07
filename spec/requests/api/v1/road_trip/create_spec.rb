@@ -88,13 +88,33 @@ describe 'Forecast API' do
           expect(result[:weather_at_eta]).to have_key(:temperature)
         end
       end
+
+      it "returns weather data when the trip is greater than 7 days and we still have weather for that day" do
+        VCR.use_cassette('requests/api/v1/roadtrip_london_to_capetown') do
+          route = { origin: 'london, uk',
+                    destination:  'capetown, za',
+                    api_key: @user1.api_key}
+          headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+
+          post "/api/v1/road_trip", headers: headers, params: route.to_json
+
+          result = JSON.parse(response.body, symbolize_names: true)[:data][:attributes]
+          expect(response).to be_successful
+          expect(response.status).to eq(200)
+          expect(result[:start_city]).to eq("#{route[:origin]}")
+          expect(result[:end_city]).to eq("#{route[:destination]}")
+          expect(result[:travel_time]).to eq("168 hours, 28 minutes")
+          expect(result[:weather_at_eta]).to be_a(Hash)
+          expect(result[:weather_at_eta]).to have_key(:temperature)
+        end
+      end
     end
 
     describe 'sad path' do
-      it "returns no weather data when the trip is greater than 7 days" do
-        VCR.use_cassette('requests/api/v1/roadtrip_london_to_capetown') do
+      it "returns no weather data when the trip is greater than last day of weather" do
+        VCR.use_cassette('requests/api/v1/roadtrip_beijing_to_capetown') do
           user1 = User.create!(email: 'jordiebear@email.com', password: 'littleone', password_confirmation: 'littleone')
-          route = { origin: 'london, uk',
+          route = { origin: 'beijing, cn',
                     destination:  'capetown, za',
                     api_key: user1.api_key}
           headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
@@ -106,7 +126,7 @@ describe 'Forecast API' do
           expect(response.status).to eq(200)
           expect(result[:start_city]).to eq("#{route[:origin]}")
           expect(result[:end_city]).to eq("#{route[:destination]}")
-          expect(result[:travel_time]).to eq("168 hours, 28 minutes")
+          expect(result[:travel_time]).to eq("221 hours, 49 minutes")
           expect(result[:weather_at_eta]).to be_a(Hash)
           expect(result[:weather_at_eta].empty?).to eq(true)
         end
