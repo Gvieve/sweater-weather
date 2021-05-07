@@ -27,18 +27,18 @@ class RoadTrip
   def get_weather(weather, route)
     current_time = weather[:current][:dt] unless weather.nil?
     arrival = arrival_time(current_time, route[:formattedTime]) unless route.nil?
-
-    if @hours.to_i > 167 || weather.nil?
+    no_weather = weather_not_available(weather, arrival) if arrival && weather
+    if no_weather || weather.nil?
       {}
     elsif @hours.to_i > 47
-      daily = daily_weather(weather, arrival)
-      { temperature: daily.max_temp,
-        conditions: daily.conditions }
+      daily_weather(weather, arrival)
     else
-      hourly = hourly_weather(weather, arrival)
-      { temperature: hourly.temperature,
-        conditions: hourly.conditions }
+      hourly_weather(weather, arrival)
     end
+  end
+
+  def weather_not_available(weather, arrival)
+    return true if (Time.at(weather[:daily].last[:dt]) - arrival) < 0
   end
 
   def arrival_time(current_time, travel_time_raw)
@@ -49,17 +49,19 @@ class RoadTrip
   end
 
   def daily_weather(weather, arrival)
-    destination_weather = weather[:daily].find do |daily|
+    daily = weather[:daily].find do |daily|
       Time.at(daily[:dt]).day == arrival.day
     end
-    DailyWeather.new(destination_weather)
+    { temperature: daily[:temp][:max],
+      conditions: daily[:weather].first[:description] }
   end
 
   def hourly_weather(weather, arrival)
-    arrival = arrival - ((arrival.min * 60) + arrival.sec) if arrival.min > 29
-    destination_weather = weather[:hourly].find do |hourly|
+    arrival = arrival - ((arrival.min * 60) + arrival.sec) if arrival.min < 30
+    hourly = weather[:hourly].find do |hourly|
       Time.at(hourly[:dt]) >= arrival
     end
-    HourlyWeather.new(destination_weather)
+    { temperature: hourly[:temp],
+      conditions: hourly[:weather].first[:description] }
   end
 end

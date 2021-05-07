@@ -47,10 +47,10 @@ These instructions will get you a copy of the project up and running on your loc
   - Visit the [mapquest developer tools](https://developer.mapquest.com/) to create an account and follow the instructions to obtain an api key.
 
 * __OpenWeatherMap API__
-  Visit the [OpenWeatherMap API](https://openweathermap.org/api) to create an account and follow the instructions to obtain an api key.
+  - Visit the [OpenWeatherMap API](https://openweathermap.org/api) to create an account and follow the instructions to obtain an api key.
 
 * __Unsplash API__
-  Visit the [Unsplash developers tools](https://unsplash.com/developers) to create an account and follow the instructions to obtain an api key.
+  - Visit the [Unsplash developers tools](https://unsplash.com/developers) to create an account and follow the instructions to obtain an api key.
 
 #### Installing
 
